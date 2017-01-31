@@ -60,7 +60,7 @@ namespace RockPaperScissors
             else
             {
                 Console.Clear();
-                Console.WriteLine($"Ok, Bye Bye {name}");
+                Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
                 return Console.ReadLine();
             }
         }
