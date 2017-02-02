@@ -15,6 +15,7 @@ namespace RockPaperScissors
             Console.WriteLine($"Hello {name} its nice to meet you!");
             int playerWins = 0, computerWins = 0, tieWins = 0;
             GamePlay(name, playerWins, computerWins, tieWins);
+            Console.WriteLine("Test");
         }
 
         private static string GamePlay(string name, int playerWins, int computerWins, int tieWins)
