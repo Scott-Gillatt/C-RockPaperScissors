@@ -8,24 +8,23 @@ namespace RockPaperScissors
 {
     class Program
     {
+        static int playerWins = 0, computerWins = 0, tieWins = 0, totalPlays = 0;
         static void Main(string[] args)
         {
             Console.WriteLine("Hello What is your name? ");
             string name = Console.ReadLine();
             Console.WriteLine($"Hello {name} its nice to meet you!");
-            int playerWins = 0, computerWins = 0, tieWins = 0;
-            GamePlay(name, playerWins, computerWins, tieWins);
-            Console.WriteLine("Test");
+            GamePlay(name);
         }
 
-        private static string GamePlay(string name, int playerWins, int computerWins, int tieWins)
+        private static string GamePlay(string name)
         {
             Console.WriteLine("Lets play a game of Rock, Paper, or Scissors");
             Console.WriteLine("Are you ready? Yes or No ");
             string input = Console.ReadLine().ToLower();
-            if (input == "yes" || input == "y")
+            if (input == "yes" || input == "y" || input == "ye")
             {
-                return RockPaperScissors(name, playerWins, computerWins, tieWins);
+                return RockPaperScissors(name);
             }
             else
             {
@@ -33,7 +32,7 @@ namespace RockPaperScissors
             }
         }
 
-        private static string RockPaperScissors(string name, int playerWins, int computerWins, int tieWins)
+        private static string RockPaperScissors(string name)
         {
             Console.Clear();
             Console.WriteLine("ROCK ON!! Lets play!");
@@ -41,22 +40,17 @@ namespace RockPaperScissors
             string playersPick = ValidInput(Console.ReadLine());
             string computerPick = ComputersPick();
             string winner = Winner(playersPick, computerPick);
-
+            Stats(winner);
 
             Console.WriteLine(DisplayWinner(winner, playersPick, computerPick, name));
-            if (winner == "player")
-                playerWins++;
-            else if (winner == "computer")
-                computerWins++;
-            else
-                tieWins++;
-            Console.WriteLine($"Player Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}");
+
+            Console.WriteLine($"Player Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
             Console.WriteLine($"Do you want to play again {name}? Yes or No");
             string input = Console.ReadLine().ToLower();
-            if (input == "yes" || input == "y")
+            if (input == "yes" || input == "y" || input == "ye")
             {
                 Console.Clear();
-                return RockPaperScissors(name, playerWins, computerWins, tieWins);
+                return RockPaperScissors(name);
             }
             else
             {
@@ -68,15 +62,32 @@ namespace RockPaperScissors
 
         private static string ValidInput(string theirPick)
         {
-            if (theirPick.ToLower() == "rock" || theirPick.ToLower() == "paper" || theirPick.ToLower() == "scissors")
+            switch (theirPick.ToLower())
             {
-                return theirPick;
-            }
-            else
-            {
-                Console.WriteLine($"Sorry, {theirPick} is a invalid input.");
-                Console.WriteLine("Please Enter in Rock, Paper, or Scissors");
-                return ValidInput(Console.ReadLine());
+                case "r":
+                case "rock":
+                case "ro":
+                case "roc":
+                    return "Rock";
+                case "p":
+                case "pa":
+                case "pap":
+                case "pape":
+                case "paper":
+                    return "Paper";
+                case "s":
+                case "sc":
+                case "sci":
+                case "scis":
+                case "sciss":
+                case "scisso":
+                case "scissor":
+                case "scissors":
+                    return "Scissors";
+                default:
+                    Console.WriteLine($"Sorry, {theirPick} is a invalid input.");
+                    Console.WriteLine("Please Enter in Rock, Paper, or Scissors");
+                    return ValidInput(Console.ReadLine());
             }
         }
 
@@ -112,6 +123,17 @@ namespace RockPaperScissors
                 return $"Sorry {name}, Computer Won.. It picked {computersPick} and you picked {playersPick}";
             else
                 return "Games Result was a Tie.  Try Again.";
+        }
+
+        private static int Stats(string winner)
+        {
+            totalPlays++;
+            if (winner == "player")
+                return playerWins++;
+            else if (winner == "computer")
+                return computerWins++;
+            else
+                return tieWins++;
         }
 
     }
