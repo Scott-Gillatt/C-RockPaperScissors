@@ -17,22 +17,25 @@ namespace RockPaperScissors
             GamePlay(name);
         }
 
-        private static string GamePlay(string name)
+        private static void GamePlay(string name)
         {
             Console.WriteLine("Lets play a game of Rock, Paper, or Scissors");
             Console.WriteLine("Are you ready? Yes or No ");
             string input = Console.ReadLine().ToLower();
-            if (input == "yes" || input == "y" || input == "ye")
+            if (ValidateInput(input))
             {
-                return RockPaperScissors(name);
+                RockPaperScissors(name);
             }
             else
             {
-                return $"Sorry to hear {name}, that you don't want to play.  Maybe next time!";
+                Console.Clear();
+                Console.WriteLine($"Sorry to hear {name}, that you don't want to play.  Maybe next time!");
+                Console.ReadLine();
             }
+
         }
 
-        private static string RockPaperScissors(string name)
+        private static void RockPaperScissors(string name)
         {
             Console.Clear();
             Console.WriteLine("ROCK ON!! Lets play!");
@@ -45,19 +48,25 @@ namespace RockPaperScissors
             Console.WriteLine(DisplayWinner(winner, playersPick, computerPick, name));
 
             Console.WriteLine($"Player Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
-            Console.WriteLine($"Do you want to play again {name}? Yes or No");
+            while (PlayAgain())
+            {
+                Console.Clear();
+                RockPaperScissors(name);
+            }
+            Console.Clear();
+            Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
+            Console.ReadLine();
+        }
+
+        private static bool PlayAgain()
+        {
+            Console.WriteLine($"Do you want to play again? Yes or No");
             string input = Console.ReadLine().ToLower();
-            if (input == "yes" || input == "y" || input == "ye")
-            {
-                Console.Clear();
-                return RockPaperScissors(name);
-            }
+            if (ValidateInput(input))
+                return true;
             else
-            {
-                Console.Clear();
-                Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
-                return Console.ReadLine();
-            }
+                return false;
+
         }
 
         private static string ValidInput(string theirPick)
@@ -134,6 +143,21 @@ namespace RockPaperScissors
                 return computerWins++;
             else
                 return tieWins++;
+        }
+
+        private static bool ValidateInput(string input)
+        {
+            switch (input.ToLower())
+            {
+                case "y":
+                case "ye":
+                case "yes":
+                    return true;
+                case "no":
+                    return false;
+                default:
+                    return false;
+            }
         }
 
     }
