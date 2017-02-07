@@ -30,9 +30,7 @@ namespace RockPaperScissors
                     Console.Clear();
                     RockPaperScissors(name);
                 }
-                Console.Clear();
-                Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
-                Console.ReadLine();
+                EndGame(name);
             }
             else
             {
@@ -68,6 +66,13 @@ namespace RockPaperScissors
             else
                 return false;
 
+        }
+
+        private static void EndGame(string name)
+        {
+            Console.Clear();
+            Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
+            Console.ReadLine();
         }
 
         private static string ValidInput(string theirPick)
