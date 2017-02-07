@@ -9,6 +9,8 @@ namespace RockPaperScissors
     class Program
     {
         static int playerWins = 0, computerWins = 0, tieWins = 0, totalPlays = 0;
+        static Random r = new Random();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello What is your name? ");
@@ -53,7 +55,7 @@ namespace RockPaperScissors
 
             Console.WriteLine(DisplayWinner(winner, playersPick, computerPick, name));
 
-            Console.WriteLine($"Player Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
+            Console.WriteLine($"\nPlayer Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
 
         }
 
@@ -79,25 +81,11 @@ namespace RockPaperScissors
         {
             switch (theirPick.ToLower())
             {
-                case "r":
-                case "rock":
-                case "ro":
-                case "roc":
+                case "r": case "rock": case "ro": case "roc":
                     return "Rock";
-                case "p":
-                case "pa":
-                case "pap":
-                case "pape":
-                case "paper":
+                case "p": case "pa": case "pap": case "pape": case "paper":
                     return "Paper";
-                case "s":
-                case "sc":
-                case "sci":
-                case "scis":
-                case "sciss":
-                case "scisso":
-                case "scissor":
-                case "scissors":
+                case "s": case "sc": case "sci": case "scis": case "sciss": case "scisso": case "scissor": case "scissors":
                     return "Scissors";
                 default:
                     Console.WriteLine($"Sorry, {theirPick} is a invalid input.");
@@ -108,7 +96,6 @@ namespace RockPaperScissors
 
         private static string ComputersPick()
         {
-            Random r = new Random();
             int number = r.Next(1, 4);
 
             if (number == 1)
@@ -159,8 +146,6 @@ namespace RockPaperScissors
                 case "ye":
                 case "yes":
                     return true;
-                case "no":
-                    return false;
                 default:
                     return false;
             }
