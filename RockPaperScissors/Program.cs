@@ -25,6 +25,14 @@ namespace RockPaperScissors
             if (ValidateInput(input))
             {
                 RockPaperScissors(name);
+                while (PlayAgain())
+                {
+                    Console.Clear();
+                    RockPaperScissors(name);
+                }
+                Console.Clear();
+                Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
+                Console.ReadLine();
             }
             else
             {
@@ -48,14 +56,7 @@ namespace RockPaperScissors
             Console.WriteLine(DisplayWinner(winner, playersPick, computerPick, name));
 
             Console.WriteLine($"Player Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
-            while (PlayAgain())
-            {
-                Console.Clear();
-                RockPaperScissors(name);
-            }
-            Console.Clear();
-            Console.WriteLine($"Ok, Bye Bye {name}, See you Next Time!!");
-            Console.ReadLine();
+
         }
 
         private static bool PlayAgain()
