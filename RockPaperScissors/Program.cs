@@ -9,12 +9,16 @@ namespace RockPaperScissors
     class Program
     {
         static int playerWins = 0, computerWins = 0, tieWins = 0, totalPlays = 0;
+        static Random r = new Random();
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello What is your name? ");
-            string name = Console.ReadLine();
-            Console.WriteLine($"Hello {name} its nice to meet you!");
-            GamePlay(name);
+            Console.WriteLine("How Many Times do you want to play Rock, Paper, Scissors?");
+            PlayManyTimes(Console.ReadLine());
+            //Console.WriteLine("Hello What is your name? ");
+            //string name = Console.ReadLine();
+            //Console.WriteLine($"Hello {name} its nice to meet you!");
+            //GamePlay(name);
         }
 
         private static string GamePlay(string name)
@@ -60,6 +64,14 @@ namespace RockPaperScissors
             }
         }
 
+        private static void RockPaperScissors()
+        {
+            string playersPick = ComputersPick();
+            string computerPick = ComputersPick();
+            string winner = Winner(playersPick, computerPick);
+            Stats(winner);
+        }
+
         private static string ValidInput(string theirPick)
         {
             switch (theirPick.ToLower())
@@ -93,7 +105,6 @@ namespace RockPaperScissors
 
         private static string ComputersPick()
         {
-            Random r = new Random();
             int number = r.Next(1, 4);
 
             if (number == 1)
@@ -134,6 +145,18 @@ namespace RockPaperScissors
                 return computerWins++;
             else
                 return tieWins++;
+        }
+
+        private static void PlayManyTimes(string input)
+        {
+            int length = Convert.ToInt32(input);
+
+            for (int i = 0; i < length; i++)
+            {
+                RockPaperScissors();
+            }
+            Console.WriteLine($"Player Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
+            Console.ReadLine();
         }
 
     }
