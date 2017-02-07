@@ -9,6 +9,8 @@ namespace RockPaperScissors
     class Program
     {
         static int playerWins = 0, computerWins = 0, tieWins = 0, totalPlays = 0;
+        static Random r = new Random();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello What is your name? ");
@@ -93,7 +95,6 @@ namespace RockPaperScissors
 
         private static string ComputersPick()
         {
-            Random r = new Random();
             int number = r.Next(1, 4);
 
             if (number == 1)
