@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +12,10 @@ namespace RockPaperScissors
     {
         static int playerWins = 0, computerWins = 0, tieWins = 0, totalPlays = 0;
         static Random r = new Random();
-
+        static ArrayList runningStats = new ArrayList();
         static void Main(string[] args)
         {
+            ReadAndWriteFile.FileWork.LoadGame();
             Console.WriteLine("Hello What is your name? ");
             string name = Console.ReadLine();
             Console.WriteLine($"Hello {name} its nice to meet you!");
@@ -151,5 +154,33 @@ namespace RockPaperScissors
             }
         }
 
+    }
+}
+
+namespace ReadAndWriteFile
+{
+    class FileWork
+    {
+        public static void LoadGame()
+        {
+            string filePath = $@"C:\Users\{Environment.UserName}\Desktop\Test.txt";
+            if (File.Exists(filePath))
+            {
+                using (StreamWriter file = new StreamWriter(filePath, true))
+                {
+                    Console.WriteLine("Please Enter in what you want to write to the file?");
+                    string TEST = Console.ReadLine();
+                    file.WriteLine(TEST);
+                }
+
+            }
+            else
+            {
+                using (StreamWriter sw = File.CreateText(filePath))
+                {
+                    sw.WriteLine("Player Wins: 0, Computer Wins: 0, Ties: 0, TotalPlays: 0");
+                }
+            }
+        }
     }
 }
