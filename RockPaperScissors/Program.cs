@@ -163,7 +163,7 @@ namespace ReadAndWriteFile
     {
         public static void LoadGame()
         {
-            string filePath = $@"C:\Users\{Environment.UserName}\Desktop\Test.txt";
+            string filePath = $@"C:\Users\{Environment.UserName}\Desktop\RockPaperScissors.txt";
             if (File.Exists(filePath))
             {
                 using (StreamWriter file = new StreamWriter(filePath, true))
