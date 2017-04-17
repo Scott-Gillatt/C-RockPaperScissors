@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ReadAndWriteFile;
 
 namespace RockPaperScissors
 {
@@ -15,7 +16,7 @@ namespace RockPaperScissors
         static List<string> runningStats = new List<string>();
         static void Main(string[] args)
         {
-            ReadAndWriteFile.FileWork.LoadGame();
+            FileWork.LoadGame();
             GamePlay();
         }
 
@@ -72,7 +73,7 @@ namespace RockPaperScissors
 
         private static void EndGame()
         {
-            ReadAndWriteFile.FileWork.SaveGame(runningStats);
+            FileWork.SaveGame(runningStats);
             Console.Clear();
             Console.WriteLine($"Ok, Bye Bye. See you Next Time!!");
             Console.ReadLine();
