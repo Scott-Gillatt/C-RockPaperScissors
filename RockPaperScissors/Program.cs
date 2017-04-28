@@ -12,7 +12,7 @@ namespace RockPaperScissors
     class Program
     {
         public static int playerWins = 0, computerWins = 0, tieWins = 0, totalPlays = 0;
-        static Random r = new Random();
+
         static List<string> runningStats = new List<string>();
         static void Main(string[] args)
         {
@@ -27,11 +27,13 @@ namespace RockPaperScissors
             string input = Console.ReadLine().ToLower();
             if (ValidateInput(input))
             {
-                RockPaperScissors();
+                Player currentPlayer = new Player();
+                Computer currentComputer = new Computer();
+                RockPaperScissors(currentPlayer, currentComputer);
                 while (PlayAgain())
                 {
                     Console.Clear();
-                    RockPaperScissors();
+                    RockPaperScissors(currentPlayer, currentComputer);
                 }
                 EndGame();
             }
@@ -44,17 +46,25 @@ namespace RockPaperScissors
 
         }
 
-        private static void RockPaperScissors()
+        private static void RockPaperScissors(Player currentPlayer, Computer currentComputer)
         {
+
             Console.Clear();
             Console.WriteLine("ROCK ON!! Lets play!");
-            Console.WriteLine("Please pick Rock, Paper, or Scissors");
-            string playersPick = ValidInput(Console.ReadLine());
-            string computerPick = ComputersPick();
-            string winner = Winner(playersPick, computerPick);
+            Console.WriteLine("Please pick 1 for Rock, 2 for Paper, or 3 for Scissors");
+
+
+            var playersPick = ValidInput(Convert.ToInt16(Console.ReadLine()));
+
+            //if(!int.TryParse()
+
+
+            currentPlayer.PlayerPick = playersPick;
+            currentComputer.ComputerPicks = ((HandPick) currentComputer.GenerateComputersPick());
+            string winner = Winner(currentPlayer, currentComputer);
             Stats(winner);
 
-            Console.WriteLine(DisplayWinner(winner, playersPick, computerPick));
+            Console.WriteLine(DisplayWinner(winner, currentPlayer.PlayerPick.ToString(), currentComputer.ComputerPicks.ToString()));
             runningStats.Add($"PlayerWins:{playerWins},ComputerWins:{computerWins},Ties:{tieWins},TotalPlays:{totalPlays};");
             Console.WriteLine($"\nPlayer Wins: {playerWins}, Computer Wins: {computerWins}, and Ties: {tieWins}, out of {totalPlays}");
 
@@ -79,55 +89,60 @@ namespace RockPaperScissors
             Console.ReadLine();
         }
 
-        private static string ValidInput(string theirPick)
+        private static HandPick ValidInput(int PlayerPick)
         {
-            switch (theirPick.ToLower())
+            //switch (theirPick.ToLower())
+            //{
+            //    case "r":
+            //    case "rock":
+            //    case "ro":
+            //    case "roc":
+            //        return "Rock";
+            //    case "p":
+            //    case "pa":
+            //    case "pap":
+            //    case "pape":
+            //    case "paper":
+            //        return "Paper";
+            //    case "s":
+            //    case "sc":
+            //    case "sci":
+            //    case "scis":
+            //    case "sciss":
+            //    case "scisso":
+            //    case "scissor":
+            //    case "scissors":
+            //        return "Scissors";
+            //    default:
+            //        Console.WriteLine($"Sorry, {theirPick} is a invalid input.");
+            //        Console.WriteLine("Please Enter in Rock, Paper, or Scissors");
+            //        return ValidInput(Console.ReadLine());
+            //}
+            switch (PlayerPick) 
             {
-                case "r":
-                case "rock":
-                case "ro":
-                case "roc":
-                    return "Rock";
-                case "p":
-                case "pa":
-                case "pap":
-                case "pape":
-                case "paper":
-                    return "Paper";
-                case "s":
-                case "sc":
-                case "sci":
-                case "scis":
-                case "sciss":
-                case "scisso":
-                case "scissor":
-                case "scissors":
-                    return "Scissors";
+                case 1:
+                    return HandPick.Rock;
+                case 2:
+                    return HandPick.Paper;
+                case 3:
+                    return HandPick.Scissors;
                 default:
-                    Console.WriteLine($"Sorry, {theirPick} is a invalid input.");
-                    Console.WriteLine("Please Enter in Rock, Paper, or Scissors");
-                    return ValidInput(Console.ReadLine());
+                    //int.tryParse() should clean this up.
+                    Console.WriteLine($"Sorry, {PlayerPick} is a invalid input.");
+                    Console.WriteLine($"Please Enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
+                    return ValidInput(Convert.ToInt16(Console.ReadLine()));
             }
+
         }
 
-        private static string ComputersPick()
-        {
-            int number = r.Next(1, 4);
 
-            if (number == 1)
-                return "Rock";
-            else if (number == 2)
-                return "Paper";
-            else
-                return "Scissors";
-        }
 
-        private static string Winner(string playersPick, string computersPick)
+        private static string Winner(Player playersPick, Computer computersPick)
         {
-            string playersPickLower = playersPick.ToLower();
-            if (playersPickLower == computersPick.ToLower())
+
+            if (playersPick.PlayerPick == computersPick.ComputerPicks)
                 return "tie";
-            else if ((playersPickLower == "rock" && computersPick == "Scissors") || (playersPickLower == "paper" && computersPick == "Rock") || (playersPickLower == "scissors" && computersPick == "Rock"))
+            else if ((playersPick.PlayerPick == HandPick.Rock && computersPick.ComputerPicks == HandPick.Scissors) || (playersPick.PlayerPick == HandPick.Paper && computersPick.ComputerPicks == HandPick.Rock) || (playersPick.PlayerPick == HandPick.Scissors && computersPick.ComputerPicks == HandPick.Paper))
                 return "player";
             else
                 return "computer";
@@ -168,6 +183,35 @@ namespace RockPaperScissors
         }
 
     }
+
+    class Player
+    {
+        public HandPick PlayerPick { get; set; }
+    }
+
+    class Computer
+    {
+        static Random r = new Random();
+        public HandPick ComputerPicks { get; set; }
+        public HandPick GenerateComputersPick()
+        {
+            int number = r.Next(0,3);
+            if (number == 0)
+                return HandPick.Rock;
+            if (number == 1)
+                return HandPick.Paper;
+            else
+                return HandPick.Scissors;
+        }
+    }
+
+    enum HandPick
+    {
+        Rock,
+        Paper,
+        Scissors
+    }
+
 }
 
 namespace ReadAndWriteFile
@@ -183,19 +227,6 @@ namespace ReadAndWriteFile
                 string lastLine = lines[lines.Length - 1];
 
                 List<int> lastStats = new List<int>();
-                //for (int x = 0; x < lastLine.Length; x++)
-                //{
-                //    string total = "";
-                //    if ((lastLine[x] > 47) && lastLine[x] < 58)
-                //    {
-
-                //        Console.Write($"{lastLine[x]} is a Integer ");
-                //    }
-                //    else
-                //    {
-                //        Console.WriteLine($"{lastLine[x]} is a string");
-                //    }
-                //}
                 for (int x = 0; x < lastLine.Length; x++)
                 {
                     if (lastLine[x] == 58)
@@ -239,7 +270,7 @@ namespace ReadAndWriteFile
         {
             using (StreamWriter sw = File.AppendText(filePath))
             {
-                foreach(string data in Data)
+                foreach (string data in Data)
                 {
                     sw.WriteLine(data);
                 }
