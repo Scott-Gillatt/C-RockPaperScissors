@@ -52,41 +52,10 @@ namespace RockPaperScissors
             Console.Clear();
             Console.WriteLine("ROCK ON!! Lets play!");
             Console.WriteLine("Please pick 1 for Rock, 2 for Paper, or 3 for Scissors");
-            int number;
-            bool result = int.TryParse(Console.ReadLine(), out number);
-            if (!result)
-            {
-                while (!result)
-                {
-                    Console.WriteLine($"Sorry, that is a invalid input.");
-                    Console.WriteLine($"Please Enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
-                    result = int.TryParse(Console.ReadLine(), out number);
-                    if (result)
-                    {
-                        currentPlayer.PlayerPick = ValidInput(number);
-                        if (currentPlayer.PlayerPick == HandPick.False)
-                        {
-                            result = false;
-                        }
-                    }
-                    else
-                    {
-                        result = false;
-                    }
-                }
-            }
-            else
-            {
-                currentPlayer.PlayerPick = ValidInput(number);
-                if(currentPlayer.PlayerPick == HandPick.False)
-                {
 
-                }
-            }
-
-            //currentPlayer.PlayerPick = number;
-            currentComputer.ComputerPicks = ((HandPick)currentComputer.GenerateComputersPick());
-            string winner = Winner(currentPlayer, currentComputer);
+            currentPlayer.PlayerPick = IsNumberIsEntered(Console.ReadLine());
+            currentComputer.ComputerPicks = (currentComputer.GenerateComputersPick());
+            var winner = Winner(currentPlayer.PlayerPick, currentComputer.ComputerPicks);
             Stats(winner);
 
             Console.WriteLine(DisplayWinner(winner, currentPlayer.PlayerPick.ToString(), currentComputer.ComputerPicks.ToString()));
@@ -114,7 +83,7 @@ namespace RockPaperScissors
             Console.ReadLine();
         }
 
-        private static HandPick ValidInput(int PlayerPick)
+        private static HandPick ValidHandPick(int PlayerPick)
         {
             switch (PlayerPick)
             {
@@ -125,20 +94,82 @@ namespace RockPaperScissors
                 case 3:
                     return HandPick.Scissors;
                 default:
-                    //Console.WriteLine($"Sorry, {PlayerPick} is not a correct number\n please 1 for Rock, 2 for Paper, or 3 for Scissors");
                     return HandPick.False;
             }
 
         }
 
+        private static HandPick IsNumberIsEntered(string PlayerInput)
+        {
+            int number;
+            bool result = int.TryParse(PlayerInput, out number);
+
+            if (result)
+            {
+                var PlayerPick = ValidHandPick(number);
+                if (PlayerPick == HandPick.False)
+                {
+                    Console.WriteLine($"Sorry, the number: {number} is a invalid input.");
+                    Console.WriteLine($"Please Enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
+                    return IsNumberIsEntered(Console.ReadLine());
+                }
+                else
+                {
+                    return PlayerPick;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Sorry, {PlayerInput} is not a number.\nPlease enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
+                return IsNumberIsEntered(Console.ReadLine());
+            }
 
 
-        private static string Winner(Player playersPick, Computer computersPick)
+
+            //while (!result)
+            //{
+            //    if (!result)
+            //    {
+            //        Console.WriteLine($"Sorry, that is a invalid input.");
+            //        Console.WriteLine($"Please Enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
+            //        result = int.TryParse(Console.ReadLine(), out number);
+            //        if (result)
+            //        {
+            //            currentPlayer.PlayerPick = ValidHandPick(number);
+            //            if (currentPlayer.PlayerPick == HandPick.False)
+            //            {
+            //                result = false;
+            //            }
+            //            else
+            //            {
+            //                return currentPlayer.PlayerPick;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            result = false;
+            //        }
+            //    }
+
+            //    else if (result)
+            //    {
+            //        currentPlayer.PlayerPick = ValidHandPick(number);
+            //        if (currentPlayer.PlayerPick == HandPick.False)
+            //        {
+            //            result = false;
+
+            //        }
+
+            //    }
+            //}
+        }
+
+        private static string Winner(HandPick playersPick, HandPick computersPick)
         {
 
-            if (playersPick.PlayerPick == computersPick.ComputerPicks)
+            if (playersPick == computersPick)
                 return "tie";
-            else if ((playersPick.PlayerPick == HandPick.Rock && computersPick.ComputerPicks == HandPick.Scissors) || (playersPick.PlayerPick == HandPick.Paper && computersPick.ComputerPicks == HandPick.Rock) || (playersPick.PlayerPick == HandPick.Scissors && computersPick.ComputerPicks == HandPick.Paper))
+            else if ((playersPick == HandPick.Rock && computersPick == HandPick.Scissors) || (playersPick == HandPick.Paper && computersPick == HandPick.Rock) || (playersPick == HandPick.Scissors && computersPick == HandPick.Paper))
                 return "player";
             else
                 return "computer";
