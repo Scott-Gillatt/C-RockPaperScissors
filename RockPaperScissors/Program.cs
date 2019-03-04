@@ -15,8 +15,7 @@ namespace RockPaperScissors
 
         static List<string> runningStats = new List<string>();
         static void Main(string[] args)
-        {
-            FileWork.LoadGame();
+        {  
             GamePlay();
         }
 
@@ -24,9 +23,9 @@ namespace RockPaperScissors
         {
             Console.WriteLine("Lets play a game of Rock, Paper, or Scissors");
             Console.WriteLine("Are you ready? Yes or No ");
-            string input = Console.ReadLine().ToLower();
-            if (ValidateInput(input))
+            if (ValidateInput(Console.ReadLine()))
             {
+                new FileWork().LoadGame();
                 Player currentPlayer = new Player();
                 Computer currentComputer = new Computer();
                 RockPaperScissors(currentPlayer, currentComputer);
@@ -67,8 +66,7 @@ namespace RockPaperScissors
         private static bool PlayAgain()
         {
             Console.WriteLine($"Do you want to play again? Yes or No");
-            string input = Console.ReadLine().ToLower();
-            if (ValidateInput(input))
+            if (ValidateInput(Console.ReadLine()))
                 return true;
             else
                 return false;
@@ -77,7 +75,7 @@ namespace RockPaperScissors
 
         private static void EndGame()
         {
-            FileWork.SaveGame(runningStats);
+            new FileWork().SaveGame(runningStats);
             Console.Clear();
             Console.WriteLine($"Ok, Bye Bye. See you Next Time!!");
             Console.ReadLine();
@@ -123,45 +121,6 @@ namespace RockPaperScissors
                 Console.WriteLine($"Sorry, {PlayerInput} is not a number.\nPlease enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
                 return IsNumberIsEntered(Console.ReadLine());
             }
-
-
-
-            //while (!result)
-            //{
-            //    if (!result)
-            //    {
-            //        Console.WriteLine($"Sorry, that is a invalid input.");
-            //        Console.WriteLine($"Please Enter in 1 for Rock, 2 for Paper, or 3 for Scissors");
-            //        result = int.TryParse(Console.ReadLine(), out number);
-            //        if (result)
-            //        {
-            //            currentPlayer.PlayerPick = ValidHandPick(number);
-            //            if (currentPlayer.PlayerPick == HandPick.False)
-            //            {
-            //                result = false;
-            //            }
-            //            else
-            //            {
-            //                return currentPlayer.PlayerPick;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            result = false;
-            //        }
-            //    }
-
-            //    else if (result)
-            //    {
-            //        currentPlayer.PlayerPick = ValidHandPick(number);
-            //        if (currentPlayer.PlayerPick == HandPick.False)
-            //        {
-            //            result = false;
-
-            //        }
-
-            //    }
-            //}
         }
 
         private static string Winner(HandPick playersPick, HandPick computersPick)
@@ -204,8 +163,12 @@ namespace RockPaperScissors
                 case "ye":
                 case "yes":
                     return true;
-                default:
+                case "n":
+                case "no":
                     return false;
+                default:
+                    Console.WriteLine($"Sorry, didn't understand.  \nYes to play or No to quit.");
+                    return ValidateInput(Console.ReadLine());
             }
         }
 

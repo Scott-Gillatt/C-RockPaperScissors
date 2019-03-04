@@ -7,8 +7,8 @@ namespace ReadAndWriteFile
 {
     class FileWork
     {
-        static string filePath = $@"C:\Users\{Environment.UserName}\Desktop\RockPaperScissors.txt";
-        public static void LoadGame()
+        string filePath = $@"C:\Users\{Environment.UserName}\Desktop\RockPaperScissors.txt";
+        public void LoadGame()
         {
             if (File.Exists(filePath))
             {
@@ -47,7 +47,7 @@ namespace ReadAndWriteFile
             }
         }
 
-        private static void CreateGame()
+        private void CreateGame()
         {
             using (StreamWriter sw = File.CreateText(filePath))
             {
@@ -55,7 +55,7 @@ namespace ReadAndWriteFile
             }
         }
 
-        public static void SaveGame(List<string> Data)
+        public void SaveGame(List<string> Data)
         {
             using (StreamWriter sw = File.AppendText(filePath))
             {
